@@ -3,6 +3,11 @@ import { features } from "@/lib/env";
 import { getCurrentUser } from "@/lib/auth/session";
 import { getPrimaryCase } from "@/lib/services/case-service";
 import { AppShell } from "@/components/app/app-shell";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default async function AppLayout({
   children,

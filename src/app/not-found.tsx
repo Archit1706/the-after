@@ -1,8 +1,12 @@
 import Link from "next/link";
 import { LogoMark } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
+import type { Metadata } from "next";
 
-export const metadata = { title: "Page not found" };
+export const metadata: Metadata = {
+  title: "Page not found",
+  robots: { index: false, follow: false },
+};
 
 export default function NotFound() {
   return (

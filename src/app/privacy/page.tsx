@@ -1,10 +1,13 @@
 import { SiteHeader } from "@/components/site/site-header";
 import { SiteFooter } from "@/components/site/site-footer";
 import { Container } from "@/components/ui/container";
+import type { Metadata } from "next";
 
-export const metadata = {
-  title: "Privacy",
-  description: "How The After treats your information.",
+export const metadata: Metadata = {
+  title: "Privacy and your information",
+  description:
+    "Learn how The After keeps your death-admin plan, documents, and personal information private and in your control.",
+  alternates: { canonical: "/privacy" },
 };
 
 const sections = [
