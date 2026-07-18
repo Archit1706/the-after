@@ -167,7 +167,6 @@ export async function draftLetter(
       {
         system:
           "You help grieving people handle estate paperwork. Write clearly and kindly. Never invent specific facts (account numbers, dates) — use placeholders. Output only the letter or script text.",
-        temperature: 0.6,
         maxOutputTokens: 700,
       }
     );

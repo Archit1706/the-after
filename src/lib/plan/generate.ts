@@ -182,8 +182,7 @@ async function aiSummary(
       {
         system:
           "You are a gentle, grounded bereavement companion. Never clinical, never saccharine.",
-        temperature: 0.7,
-        maxOutputTokens: 220,
+        maxOutputTokens: 320,
       }
     );
     return text.trim() || deterministicSummary(caseRecord, taskCount);

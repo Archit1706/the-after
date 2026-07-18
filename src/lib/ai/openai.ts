@@ -168,7 +168,7 @@ export class OpenAiProvider implements AiProvider {
       const raw = await this.createChat({
         messages: extra ? [...messages, extra] : messages,
         system,
-        temperature: options.temperature ?? 0.3,
+        temperature: options.temperature,
         maxOutputTokens: options.maxOutputTokens,
         jsonMode: true,
         signal: options.signal,

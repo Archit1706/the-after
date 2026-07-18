@@ -49,7 +49,6 @@ export async function POST(req: Request): Promise<Response> {
       try {
         for await (const chunk of ai.streamText(aiMessages, {
           system,
-          temperature: 0.7,
           maxOutputTokens: 600,
         })) {
           full += chunk;
