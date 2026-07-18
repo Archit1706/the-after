@@ -7,6 +7,9 @@ import { getInstitution } from "@/lib/directory/institutions";
 import { LetterType } from "@/lib/domain/enums";
 import type { Task } from "@/lib/domain/schemas";
 
+// Drafting a letter calls the model; allow headroom over the default.
+export const maxDuration = 60;
+
 /**
  * Generates (or reuses) a draft for a given task, then redirects into the
  * editor. Reuse keeps the same link idempotent so revisiting doesn't

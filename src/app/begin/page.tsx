@@ -8,6 +8,10 @@ export const metadata = {
   title: "Begin gently",
 };
 
+// Intake completion runs AI plan generation; allow headroom over the
+// serverless default so it never times out mid-generation.
+export const maxDuration = 60;
+
 export default async function BeginPage() {
   const user = await getCurrentUser();
 

@@ -7,6 +7,9 @@ import { createLogger } from "@/lib/logger";
 
 const log = createLogger("api:companion");
 
+// Streaming AI replies can run longer than the serverless default.
+export const maxDuration = 60;
+
 export async function POST(req: Request): Promise<Response> {
   const user = await getCurrentUser();
   if (!user) return new Response("Unauthorized", { status: 401 });

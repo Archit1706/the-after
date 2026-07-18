@@ -9,6 +9,9 @@ import { formatDate } from "@/lib/utils";
 
 export const metadata = { title: "Settings" };
 
+// The regenerate-plan action calls the model; allow headroom over the default.
+export const maxDuration = 60;
+
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between gap-4 border-b border-border py-3 last:border-0">

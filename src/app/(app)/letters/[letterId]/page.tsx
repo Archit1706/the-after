@@ -6,6 +6,9 @@ import { LetterEditor } from "@/components/letters/letter-editor";
 
 export const metadata = { title: "Letter" };
 
+// The regenerate action calls the model; allow headroom over the default.
+export const maxDuration = 60;
+
 export default async function LetterPage({
   params,
 }: {
