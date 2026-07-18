@@ -53,7 +53,11 @@ const MONTH_NAMES = [
 /** Locale-stable short date like "Jul 18, 2026". Empty string if invalid. */
 export function formatDate(iso?: string): string {
   if (!iso) return "";
-  const d = new Date(iso);
+  // Parse date-only strings ("2026-07-01") as local midnight to avoid a
+  // UTC off-by-one; full timestamps parse as-is.
+  const d = /^\d{4}-\d{2}-\d{2}$/.test(iso)
+    ? new Date(`${iso}T00:00:00`)
+    : new Date(iso);
   if (Number.isNaN(d.getTime())) return "";
   return `${MONTH_NAMES[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 }
