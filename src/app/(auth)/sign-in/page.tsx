@@ -4,6 +4,10 @@ import { DemoNotice } from "@/components/auth/demo-notice";
 
 export const metadata = { title: "Sign in" };
 
+// Renders per request so it reflects the runtime auth configuration
+// (demo vs. Supabase), not whatever was true at build time.
+export const dynamic = "force-dynamic";
+
 export default async function SignInPage({
   searchParams,
 }: {
