@@ -15,43 +15,52 @@ export const metadata: Metadata = {
   alternates: { canonical: "/how-it-helps" },
 };
 
+const faqs = [
+  {
+    question: "What should I do when someone dies?",
+    answer:
+      "Start with what needs care today, then take the practical work one small piece at a time. The After turns the paperwork, calls, and documents into a personal checklist so you do not have to hold it all in your head.",
+  },
+  {
+    question: "Who needs to be notified when someone dies?",
+    answer:
+      "It depends on your situation, but family, an employer, government agencies, banks, insurers, and service providers are common places to start. The After helps you make a list and remember who you have already contacted.",
+  },
+  {
+    question: "How do I settle an estate?",
+    answer:
+      "Begin by gathering important documents, understanding what the person owned and owed, and checking whether there is a will. The After helps you get organized and prepare questions for a qualified local legal or tax professional when needed.",
+  },
+  {
+    question: "How many death certificate copies do I need?",
+    answer:
+      "The right number depends on the accounts, benefits, and property involved. Many organizations ask for a certified copy, so it helps to list who will need one before ordering and request more only when they are likely to be useful.",
+  },
+  {
+    question: "Do I need probate?",
+    answer:
+      "That depends on the estate, local law, and how assets are owned. Some estates can avoid full probate; others cannot. The After can help you organize the details and questions to bring to a qualified local professional.",
+  },
+  {
+    question: "How do I close a deceased person’s accounts?",
+    answer:
+      "When you are ready, gather the account details and a death certificate, then ask each organization for its bereavement or estate process. The After keeps those calls, documents, and next steps in one place so you can move at a manageable pace.",
+  },
+  {
+    question: "Can The After help with death admin?",
+    answer:
+      "Yes. The After offers gentle death admin help: a personal plan, document tracking, letters and phone scripts, a directory of organizations to notify, and a companion for the questions that come up along the way.",
+  },
+];
+
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "What should I do when someone dies?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Begin with the most immediate needs, then work through practical tasks such as notifying organizations, gathering documents, and caring for accounts. The After keeps those steps in one calm, personal plan.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Who needs to be notified when someone dies?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "The people and organizations vary by situation, but may include family, an employer, government agencies, banks, insurers, and service providers. The After helps you keep track of who you have contacted.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How many death certificate copies do I need?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "The right number depends on the accounts, benefits, and property involved. Many organizations need a certified copy, so it can help to make a list before ordering and request more only when they will be useful.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Do I need probate?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Whether probate is needed depends on the estate, local law, and how assets are owned. The After can help you organize the information and questions to bring to a qualified local professional.",
-      },
-    },
-  ],
+  mainEntity: faqs.map(({ question, answer }) => ({
+    "@type": "Question",
+    name: question,
+    acceptedAnswer: { "@type": "Answer", text: answer },
+  })),
 };
 
 export default function HowItHelpsPage() {
@@ -76,6 +85,32 @@ export default function HowItHelpsPage() {
         <Pillars />
         <Inclusivity />
         <PrivacyNote />
+        <section className="border-t border-border py-16 sm:py-20">
+          <Container size="sm">
+            <h2 className="text-center text-3xl sm:text-4xl">
+              Questions you may be carrying
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-center text-muted-foreground">
+              There&rsquo;s no single right order. Here are a few gentle places to
+              start when the practical questions begin to pile up.
+            </p>
+            <div className="mt-10 space-y-3">
+              {faqs.map((faq) => (
+                <details
+                  key={faq.question}
+                  className="rounded-xl border border-border bg-card px-5 py-4"
+                >
+                  <summary className="cursor-pointer font-medium text-foreground">
+                    {faq.question}
+                  </summary>
+                  <p className="mt-3 leading-relaxed text-muted-foreground">
+                    {faq.answer}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </Container>
+        </section>
         <FinalCta />
       </main>
       <SiteFooter />
