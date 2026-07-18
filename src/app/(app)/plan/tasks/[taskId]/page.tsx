@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TaskStatusControl } from "@/components/plan/task-status-control";
 import { TaskNotes } from "@/components/plan/task-notes";
+import { TaskQuestion } from "@/components/plan/task-question";
 import { DocumentKind, TaskCategory, TaskPhase } from "@/lib/domain/enums";
 import { describeDue, dueBadgeVariant } from "@/lib/plan/format";
 
@@ -140,6 +141,8 @@ export default async function TaskDetailPage({
           </Button>
         </div>
       </section>
+
+      <TaskQuestion taskId={task.id} />
 
       <section className="mt-10">
         <h2 className="text-xl">Your notes</h2>

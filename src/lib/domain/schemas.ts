@@ -109,6 +109,13 @@ export const taskSchema = z.object({
 });
 export type Task = z.infer<typeof taskSchema>;
 
+/** A focused question someone can ask about a task in their plan. */
+export const taskQuestionSchema = z
+  .string()
+  .trim()
+  .min(1, "Please write a question first.")
+  .max(1_000, "Please keep your question under 1,000 characters.");
+
 export const contactMethodSchema = z.object({
   type: ContactMethodType.schema,
   value: z.string(),
