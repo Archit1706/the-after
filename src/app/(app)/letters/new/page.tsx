@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth/session";
 import { getPrimaryCase } from "@/lib/services/case-service";
 import { getRepository } from "@/lib/db";
 import { draftLetter } from "@/lib/letters/generate";
+import { getInstitution } from "@/lib/directory/institutions";
 import { LetterType } from "@/lib/domain/enums";
 import type { Task } from "@/lib/domain/schemas";
 
@@ -14,9 +15,13 @@ import type { Task } from "@/lib/domain/schemas";
 export default async function NewLetterPage({
   searchParams,
 }: {
-  searchParams: Promise<{ taskId?: string; type?: string }>;
+  searchParams: Promise<{ taskId?: string; type?: string; institution?: string }>;
 }) {
-  const { taskId, type: typeParam } = await searchParams;
+  const {
+    taskId,
+    type: typeParam,
+    institution: institutionId,
+  } = await searchParams;
   const user = await getCurrentUser();
   if (!user) redirect("/begin");
 
@@ -32,20 +37,30 @@ export default async function NewLetterPage({
     if (found && found.caseId === primary.id) task = found;
   }
 
-  if (task) {
-    const existing = (await repo.listLetters(primary.id)).find(
-      (l) => l.taskId === task!.id && l.type === type
-    );
-    if (existing) redirect(`/letters/${existing.id}`);
-  }
+  const institution = institutionId ? getInstitution(institutionId) : undefined;
 
-  const draft = await draftLetter({ caseRecord: primary, task, type });
+  // Reuse an existing draft so the same link is idempotent.
+  const existing = (await repo.listLetters(primary.id)).find((l) => {
+    if (l.type !== type) return false;
+    if (task) return l.taskId === task.id;
+    if (institution) return l.institutionRef === institution.id;
+    return false;
+  });
+  if (existing) redirect(`/letters/${existing.id}`);
+
+  const draft = await draftLetter({
+    caseRecord: primary,
+    task,
+    type,
+    recipientName: institution?.name,
+  });
   const letter = await repo.createLetter({
     caseId: primary.id,
     taskId: task?.id,
+    institutionRef: institution?.id,
     type,
-    title: draft.title,
-    recipient: draft.recipient,
+    title: institution ? `${draft.title} — ${institution.name}` : draft.title,
+    recipient: institution?.name ?? draft.recipient,
     subject: draft.subject,
     body: draft.body,
   });
