@@ -1,26 +1,275 @@
 @import "tailwindcss";
 
+/*
+  The After — design system
+  --------------------------
+  A calm, warm, unhurried palette for people navigating loss.
+  Sage (renewal) + clay (warmth) on a paper-cream ground. Nothing
+  clinical, nothing alarming. Larger type and generous spacing for
+  readability across ages and states of grief.
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces */
+  --background: #faf6f0; /* warm paper */
+  --surface: #fffdfa; /* raised cream */
+  --surface-muted: #f3ede4; /* sunk sand */
+  --card: #fffdfa;
+  --card-foreground: #2a2521;
+
+  /* Text */
+  --foreground: #2a2521; /* soft near-black, warm */
+  --muted-foreground: #6b635b; /* warm gray */
+
+  /* Brand */
+  --primary: #4e7c6b; /* sage */
+  --primary-hover: #3f6557;
+  --primary-foreground: #fbf8f3;
+
+  --accent: #bd7f5a; /* clay */
+  --accent-hover: #a76b48;
+  --accent-foreground: #fbf8f3;
+
+  /* Lines & fields */
+  --border: #e7ded2;
+  --input: #ede4d8;
+  --ring: #4e7c6b;
+
+  /* Status (muted, never alarming) */
+  --success: #4e7c6b;
+  --success-foreground: #fbf8f3;
+  --warning: #b0823a; /* amber for approaching deadlines */
+  --warning-foreground: #fbf8f3;
+  --danger: #a85a47; /* soft brick for overdue */
+  --danger-foreground: #fbf8f3;
+
+  /* Radius & elevation */
+  --radius: 0.875rem;
+  --shadow-soft: 0 1px 2px rgba(42, 37, 33, 0.04),
+    0 8px 24px -12px rgba(42, 37, 33, 0.12);
+  --shadow-lifted: 0 2px 4px rgba(42, 37, 33, 0.05),
+    0 18px 48px -16px rgba(42, 37, 33, 0.18);
+}
+
+/* System dark preference — unless the user has explicitly chosen light. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: #1a1714;
+    --surface: #221e1a;
+    --surface-muted: #2b2621;
+    --card: #221e1a;
+    --card-foreground: #ede6dd;
+
+    --foreground: #ede6dd;
+    --muted-foreground: #a79e93;
+
+    --primary: #7fa593;
+    --primary-hover: #93b7a5;
+    --primary-foreground: #16211d;
+
+    --accent: #d19e7c;
+    --accent-hover: #dcaf90;
+    --accent-foreground: #241a12;
+
+    --border: #352d26;
+    --input: #3a322b;
+    --ring: #7fa593;
+
+    --success: #7fa593;
+    --success-foreground: #16211d;
+    --warning: #d0a35c;
+    --warning-foreground: #241a12;
+    --danger: #d08a76;
+    --danger-foreground: #241612;
+
+    --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.4),
+      0 8px 24px -12px rgba(0, 0, 0, 0.5);
+    --shadow-lifted: 0 2px 4px rgba(0, 0, 0, 0.45),
+      0 18px 48px -16px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* Explicit dark selection always wins. */
+:root[data-theme="dark"] {
+  --background: #1a1714;
+  --surface: #221e1a;
+  --surface-muted: #2b2621;
+  --card: #221e1a;
+  --card-foreground: #ede6dd;
+
+  --foreground: #ede6dd;
+  --muted-foreground: #a79e93;
+
+  --primary: #7fa593;
+  --primary-hover: #93b7a5;
+  --primary-foreground: #16211d;
+
+  --accent: #d19e7c;
+  --accent-hover: #dcaf90;
+  --accent-foreground: #241a12;
+
+  --border: #352d26;
+  --input: #3a322b;
+  --ring: #7fa593;
+
+  --success: #7fa593;
+  --success-foreground: #16211d;
+  --warning: #d0a35c;
+  --warning-foreground: #241a12;
+  --danger: #d08a76;
+  --danger-foreground: #241612;
+
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.4),
+    0 8px 24px -12px rgba(0, 0, 0, 0.5);
+  --shadow-lifted: 0 2px 4px rgba(0, 0, 0, 0.45),
+    0 18px 48px -16px rgba(0, 0, 0, 0.6);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 6px);
+  --radius-2xl: calc(var(--radius) + 14px);
+
+  --shadow-soft: var(--shadow-soft);
+  --shadow-lifted: var(--shadow-lifted);
+
+  --animate-rise: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade: fade 0.6s ease both;
+  --animate-breathe: breathe 6s ease-in-out infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  font-size: 1.0625rem; /* 17px base for readability */
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif), ui-serif, Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--foreground);
+}
+
+/* Accessible, consistent focus ring across the app. */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--primary) 22%, transparent);
+  color: var(--foreground);
+}
+
+/* Subtle, unobtrusive scrollbars. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+/* Honor users who prefer less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
