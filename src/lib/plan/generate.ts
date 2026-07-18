@@ -14,10 +14,16 @@ const PRIORITY_RANK: Record<string, number> = { high: 0, medium: 1, low: 2 };
 const PHASE_ORDER = TaskPhase.values; // ["now","soon","later"]
 
 function addDays(iso: string, days: number): string | undefined {
-  const base = new Date(iso);
+  // Parse date-only strings as local midnight so day math doesn't drift.
+  const base = /^\d{4}-\d{2}-\d{2}$/.test(iso)
+    ? new Date(`${iso}T00:00:00`)
+    : new Date(iso);
   if (Number.isNaN(base.getTime())) return undefined;
   base.setDate(base.getDate() + days);
-  return base.toISOString().slice(0, 10);
+  const y = base.getFullYear();
+  const m = String(base.getMonth() + 1).padStart(2, "0");
+  const d = String(base.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 }
 
 function templateToTask(
