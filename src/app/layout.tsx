@@ -21,29 +21,41 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://the-after.vercel.app"),
+  metadataBase: new URL("https://theafter.vercel.app"),
   title: {
-    default: "The After — a gentle guide through what comes next",
+    default: "The After — a gentle guide through what comes after",
     template: "%s · The After",
   },
   description:
-    "When someone you love dies, the paperwork shouldn't add to the grief. The After walks you through what to do, one calm step at a time.",
+    "A gentle guide for what to do when someone dies: organize who to notify, documents, accounts, and estate tasks one calm step at a time.",
   applicationName: "The After",
   keywords: [
-    "grief",
-    "bereavement",
-    "estate",
-    "death admin",
-    "probate",
-    "executor",
-    "after a death",
+    "what to do when someone dies checklist",
+    "who to notify when someone dies",
+    "how to settle an estate",
+    "how many death certificate copies do I need",
+    "do I need probate",
+    "how to close a deceased person's accounts",
+    "death admin help",
   ],
   openGraph: {
-    title: "The After",
+    title: "The After — a gentle guide through what comes after",
     description:
-      "A gentle, guided companion for the practical side of loss — one calm step at a time.",
+      "A gentle guide for the practical tasks after a loss — one calm step at a time.",
     type: "website",
+    siteName: "The After",
+    locale: "en_US",
+    url: "/",
+    images: ["/opengraph-image"],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "The After — a gentle guide through what comes after",
+    description:
+      "A gentle guide for the practical tasks after a loss — one calm step at a time.",
+    images: ["/twitter-image"],
+  },
+  alternates: { canonical: "/" },
 };
 
 export const viewport: Viewport = {
@@ -51,6 +63,7 @@ export const viewport: Viewport = {
     { media: "(prefers-color-scheme: light)", color: "#faf6f0" },
     { media: "(prefers-color-scheme: dark)", color: "#1a1714" },
   ],
+  colorScheme: "light dark",
   width: "device-width",
   initialScale: 1,
 };
