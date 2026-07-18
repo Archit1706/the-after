@@ -136,14 +136,20 @@ Next.js 16 · React 19 · TypeScript · Tailwind CSS v4 · Zod · OpenAI SDK
 -->
 
 - **Codex `/feedback` session ID:** `<add your session id here>`
-- **Where Codex accelerated the work:** _e.g. scaffolding the domain model,
-  generating the task template library, wiring the Supabase repository, iterating
-  on the intake flow…_
-- **Key decisions we made:** _e.g. the pluggable AI layer with a deterministic
-  fallback so the app is always demoable; deadline math driven from the date of
-  passing; per-browser guest identity for a frictionless first run…_
+- **Where Codex accelerated the work:** Codex added the technical SEO foundation
+  (canonical metadata, sitemap, robots policy, manifest, and share cards),
+  page-level privacy indexing controls, visible FAQ content with matching
+  structured data, accessibility polish, and security headers. It also added a
+  focused “Ask about this step” experience on plan tasks.
+- **Key decisions we made:** GPT-5.6 helped keep the public copy useful without
+  turning it into a keyword list, and shaped the task-question prompt to stay
+  concise, caring, and grounded in the selected task. The feature uses the
+  existing provider seam so no-key demo mode remains deterministic; it does not
+  persist sensitive free-text questions or add a CSP that might disrupt
+  Supabase, OpenAI, or streaming.
 - **How GPT-5.6 shows up in the product:** intake summaries, situation-specific
-  task suggestions, letter/script drafting, and the case-grounded companion.
+  task suggestions, letter/script drafting, the case-grounded companion, and
+  focused guidance for a specific plan task.
 
 ## A note on scope
 
