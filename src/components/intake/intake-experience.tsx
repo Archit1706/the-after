@@ -207,7 +207,7 @@ export function IntakeExperience({
             Back
           </Button>
 
-          {step.kind !== "single" && (
+          {(step.kind !== "single" || step.optional) && (
             <Button onClick={() => advanceFrom(answers)}>
               {isLast ? "See my plan" : canContinueLabel}
               <ArrowRight aria-hidden />
