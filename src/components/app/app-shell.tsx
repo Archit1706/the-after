@@ -39,9 +39,10 @@ export function AppShell({
   }, []);
 
   return (
-    <div className="min-h-dvh lg:grid lg:grid-cols-[16rem_1fr]">
-      {/* Desktop sidebar */}
-      <aside className="hidden border-r border-border bg-surface lg:flex lg:flex-col">
+    <div className="min-h-dvh lg:grid lg:h-dvh lg:grid-cols-[16rem_1fr] lg:overflow-hidden">
+      {/* Desktop sidebar — pinned to the viewport; scrolls internally only if
+          its own content is taller than the screen. */}
+      <aside className="hidden border-r border-border bg-surface lg:flex lg:h-dvh lg:flex-col lg:overflow-y-auto">
         <SidebarContent user={user} pathname={pathname} />
       </aside>
 
@@ -84,7 +85,8 @@ export function AppShell({
         </div>
       )}
 
-      <main className="min-w-0 flex-1">{children}</main>
+      {/* Only the main content scrolls on desktop, so the sidebar stays put. */}
+      <main className="min-w-0 flex-1 lg:h-dvh lg:overflow-y-auto">{children}</main>
     </div>
   );
 }
