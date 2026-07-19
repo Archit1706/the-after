@@ -83,7 +83,7 @@ Next.js 16 · React 19 · TypeScript · Tailwind CSS v4 · Zod · OpenAI SDK
   you used Codex and GPT-5.6.
 -->
 
-- **Codex `/feedback` session ID:** `<add your session id here>`
+- **Codex `/feedback` session ID:** `019f7788-feac-7012-8fd6-26bde7936c55`
 - **Where Codex accelerated the work:** Codex added the technical SEO foundation
   (canonical metadata, sitemap, robots policy, manifest, and share cards),
   page-level privacy indexing controls, visible FAQ content with matching
