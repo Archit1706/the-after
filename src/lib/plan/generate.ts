@@ -13,6 +13,10 @@ const log = createLogger("plan");
 const PRIORITY_RANK: Record<string, number> = { high: 0, medium: 1, low: 2 };
 const PHASE_ORDER = TaskPhase.values; // ["now","soon","later"]
 
+// Best-effort AI enrichment is bounded so a slow model degrades to the
+// deterministic plan instead of exhausting the serverless request budget.
+const PLAN_AI_TIMEOUT_MS = 30_000;
+
 function addDays(iso: string, days: number): string | undefined {
   // Parse date-only strings as local midnight so day math doesn't drift.
   const base = /^\d{4}-\d{2}-\d{2}$/.test(iso)
@@ -116,6 +120,8 @@ async function aiExtraTasks(caseRecord: Case): Promise<NewTask[]> {
         schemaName: "extra_tasks",
         system:
           "You help grieving people with practical estate administration. Suggestions must be genuinely useful, specific, and gentle. Never invent legal deadlines.",
+        maxOutputTokens: 700,
+        signal: AbortSignal.timeout(PLAN_AI_TIMEOUT_MS),
       }
     );
 
@@ -176,13 +182,14 @@ async function aiSummary(
       [
         {
           role: "user",
-          content: `Write a short (2–3 sentence), warm, calming summary for someone who just completed intake after losing ${name}. Their plan has ${taskCount} steps grouped into "right now", "soon", and "later". Reassure them they can go at their own pace. Address them directly. Do not use lists.`,
+          content: `Write a short (2–3 sentence), warm, calming summary for someone who just completed intake after losing ${name}. Their plan is grouped into "right now", "soon", and "later". Reassure them they can go at their own pace, one step at a time. Address them directly. Do not use lists or a specific number of tasks.`,
         },
       ],
       {
         system:
           "You are a gentle, grounded bereavement companion. Never clinical, never saccharine.",
         maxOutputTokens: 320,
+        signal: AbortSignal.timeout(PLAN_AI_TIMEOUT_MS),
       }
     );
     return text.trim() || deterministicSummary(caseRecord, taskCount);
@@ -202,8 +209,16 @@ export interface GeneratedPlan {
 /** Produces the full plan: deterministic backbone + best-effort AI additions. */
 export async function generatePlan(caseRecord: Case): Promise<GeneratedPlan> {
   const base = buildBaseTasks(caseRecord);
-  const extra = await aiExtraTasks(caseRecord);
+
+  // Run the two best-effort AI calls concurrently rather than in sequence, so
+  // their latency doesn't stack and blow past the serverless time limit. Each
+  // is independently bounded and falls back to a deterministic result, so the
+  // person always gets their plan even if the model is slow or unavailable.
+  const [extra, summary] = await Promise.all([
+    aiExtraTasks(caseRecord),
+    aiSummary(caseRecord, base.length),
+  ]);
+
   const tasks = [...base, ...extra].map((t, i) => ({ ...t, order: i }));
-  const summary = await aiSummary(caseRecord, tasks.length);
   return { tasks, summary };
 }
