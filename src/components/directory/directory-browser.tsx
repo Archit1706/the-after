@@ -6,6 +6,7 @@ import {
   Check,
   ExternalLink,
   FileText,
+  Info,
   Mail,
   Phone,
   Plus,
@@ -50,9 +51,11 @@ const STATUS_CYCLE = ["to_contact", "contacted", "resolved"];
 export function DirectoryBrowser({
   institutions,
   tracked,
+  notice,
 }: {
   institutions: Institution[];
   tracked: Tracked[];
+  notice?: string;
 }) {
   const [query, setQuery] = React.useState("");
   const [category, setCategory] = React.useState<string>("all");
@@ -93,6 +96,13 @@ export function DirectoryBrowser({
 
   return (
     <div>
+      {notice && (
+        <div className="mb-5 flex items-start gap-3 rounded-xl border border-border bg-surface-muted/60 p-4 text-sm text-muted-foreground">
+          <Info className="mt-0.5 size-4.5 shrink-0 text-primary" aria-hidden />
+          <p>{notice}</p>
+        </div>
+      )}
+
       <div className="relative mb-4">
         <Search
           className="pointer-events-none absolute left-3.5 top-1/2 size-4.5 -translate-y-1/2 text-muted-foreground"
