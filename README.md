@@ -1,66 +1,21 @@
 # The After
 
-**A gentle, guided companion for the practical side of loss.**
-
-When someone you love dies, dozens of accounts, forms, and deadlines arrive all
-at once — while you're grieving. **The After** turns that overwhelming pile into
-a calm, personal plan, drafts the hardest letters and calls for you, and stays
-beside you as a companion the whole way through.
-
 > Built for **OpenAI Build Week** · Track: **Apps for Your Life**
 
-- **Live demo:** _add your Vercel URL here_
-- **Runs with zero setup:** `npm install && npm run dev` → open http://localhost:3000
+**The After is a gentle death-admin companion for the practical work that
+follows a loss.** It turns accounts, paperwork, documents, and deadlines into a
+calm personal plan, helps draft difficult letters and calls, and offers a warm
+place to ask what comes next — so a grieving person only has to face one small
+step at a time.
 
----
+- **Live demo:** [theafter.vercel.app](https://theafter.vercel.app). Private
+  test credentials are provided in the Devpost submission&rsquo;s testing
+  instructions; they are not stored in this public repository.
+- **Runs with zero setup:** `npm install && npm run dev`
 
-## Why this exists
+## Run locally
 
-Grief comes with a second, invisible job: closing bank accounts, notifying
-Social Security, ordering death certificates, filing insurance claims, canceling
-subscriptions, handling probate — often 100+ tasks, many with real deadlines.
-Most people face it with a stack of browser tabs and a legal pad, at the worst
-possible moment.
-
-The After exists to carry that load. It's designed as an **experience, not a
-dashboard**: warm, unhurried, inclusive of every kind of loss and family, and
-built so you only ever have to look at the next small step.
-
-## What it does
-
-- **Guided intake** — a warm, one-question-at-a-time conversation that learns
-  your situation. Everything is optional; nothing is required.
-- **A personal plan** — a prioritized checklist grouped into _Right now · Soon ·
-  Later_, with statutory-aware deadlines computed from the date of passing. Only
-  the tasks that apply to your situation appear.
-- **Letters & phone scripts** — drafted for banks, benefits, utilities, and any
-  organization, personalized and exportable (copy, download, print/PDF).
-- **Document vault** — keep the death certificate, will, and IDs safe, with a
-  certified-copies tracker.
-- **Who to notify** — a searchable directory of institutions with real contact
-  info, what each needs, and progress tracking.
-- **Companion** — an always-available, streaming chat grounded in your specific
-  case, so you never have to explain from scratch.
-
-## How GPT-5.6 is used
-
-The After has a **pluggable AI layer** (`src/lib/ai/`) that powers:
-
-- **Intake enrichment & plan summaries** — GPT-5.6 writes the warm, personal
-  summary of your plan and suggests situation-specific tasks a generic checklist
-  would miss (`src/lib/plan/generate.ts`).
-- **Letters & phone scripts** — GPT-5.6 drafts personalized, ready-to-use
-  correspondence (`src/lib/letters/generate.ts`).
-- **The companion** — GPT-5.6 answers grounded in your case, streamed token by
-  token (`src/app/api/companion/route.ts`).
-
-Every AI feature has a **deterministic fallback**, so the app is fully usable —
-and demoable — with no API key at all. Set `OPENAI_API_KEY` to switch the same
-code paths to live GPT-5.6.
-
-## Running it
-
-### Quick start (demo mode — no keys needed)
+### Demo mode — no environment variables
 
 ```bash
 npm install
@@ -68,58 +23,51 @@ npm run dev
 # open http://localhost:3000
 ```
 
-Out of the box the app runs in **demo mode**:
+With no `.env.local` or environment variables, The After runs immediately with
+deterministic AI and in-memory, private per-browser guest data. No account, API
+key, or database is needed, so judges can test the full flow right away.
 
-- **AI:** a deterministic model produces plans, letters, and companion replies
-  (no key, no cost). Add `OPENAI_API_KEY` to use real GPT-5.6.
-- **Data:** a private, per-browser guest space backed by an in-memory store
-  (persisted to `.data/` locally). No sign-in required.
 
-This is the simplest way for judges to try the full experience end to end — just
-click **Begin gently** and go through the intake.
+### Full mode — OpenAI + Supabase
 
-### Full mode (real accounts + persistence)
+Copy `.env.example` to `.env.local`, set the values you use, and run
+`supabase/schema.sql` once in your Supabase project before starting the app.
 
-1. Copy env: `cp .env.example .env.local`
-2. Create a [Supabase](https://supabase.com) project and run
-   [`supabase/schema.sql`](supabase/schema.sql) in its SQL editor (creates all
-   tables, row-level security, and the private `documents` storage bucket).
-3. Fill `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
-   `SUPABASE_SERVICE_ROLE_KEY`, and `OPENAI_API_KEY` in `.env.local`.
-4. `npm run dev`
+| Variable | Purpose |
+| --- | --- |
+| `OPENAI_API_KEY` | Enables live GPT-5.6 responses. |
+| `OPENAI_MODEL=gpt-5.6-sol` | Optional model override for live requests. |
+| `OPENAI_BASE_URL` | Optional OpenAI-compatible endpoint override. |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL. |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Browser-safe Supabase anonymous key. |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-side Supabase service key. |
+| `NEXT_PUBLIC_APP_URL` | Public base URL used for OAuth redirects. |
+| `APP_URL` | Optional server-side base URL fallback. |
 
-With Supabase configured, sign-in (email/password + Google) turns on
-automatically, data persists in Postgres, and documents are stored privately in
-Supabase Storage. Every table is protected by row-level security so users only
-ever see their own case.
+With Supabase configured, the app uses real accounts, Postgres persistence, and
+private document storage. Every table is protected by row-level security.
 
-### Deploying
+## Feature tour
 
-Deploy to [Vercel](https://vercel.com): import the repo, add the same
-environment variables, and deploy. Set `NEXT_PUBLIC_APP_URL` to your deployed
-URL for correct OAuth redirects (and add `<url>/auth/callback` to Supabase's
-allowed redirect URLs).
+1. **Guided intake** — a warm, one-question-at-a-time start; every answer is optional.
+2. **Personal plan** — a prioritized Right now / Soon / Later checklist shaped by the situation.
+3. **Task detail + Ask about this step** — practical steps, document needs, and focused GPT-5.6 guidance for one task.
+4. **Letters and phone scripts** — drafts for banks, benefits, utilities, and other organizations, ready to refine or export.
+5. **Document vault** — private storage for certificates, wills, IDs, statements, and certified-copy tracking.
+6. **Who-to-notify directory** — searchable organizations, contact guidance, and progress tracking.
+7. **Companion** — a case-grounded conversation for questions that arise along the way.
 
-## Architecture
+## Architecture seams
 
-- **Framework:** Next.js 16 (App Router, React 19, Server Components + Server
-  Actions), TypeScript, Tailwind CSS v4.
-- **AI:** `src/lib/ai/` — a provider interface with live OpenAI (GPT-5.6) and
-  deterministic demo implementations, selected at runtime by configuration.
-- **Domain:** `src/lib/domain/` — Zod schemas as the single source of truth for
-  types and validation.
-- **Data:** `src/lib/db/` — a `Repository` interface with two implementations
-  (in-memory demo store and Supabase-backed store) behind one factory.
-- **Auth:** per-browser guest identity in demo mode (`src/proxy.ts`), Supabase
-  Auth when configured — same `getCurrentUser()` seam either way.
-- **Plan engine:** `src/lib/plan/` — a curated, condition-aware task template
-  library plus a generator that filters by situation, computes deadlines, and
-  layers optional AI additions.
-
-Design principles: graceful degradation everywhere (no key or no database is a
-supported state, not an error), ownership-checked server actions, accessible
-components (labels, focus rings, `prefers-reduced-motion`), and a calm,
-bereavement-appropriate visual language.
+- **AI — `src/lib/ai/`:** one provider interface selects the live OpenAI
+  implementation when `OPENAI_API_KEY` is available and a deterministic demo
+  implementation when it is not. The same fallback keeps intake, letters,
+  companion, and task guidance usable with no key.
+- **Data — `src/lib/db/`:** one repository interface selects a Supabase-backed
+  implementation when configured or the deterministic in-memory demo store
+  otherwise.
+- **Auth:** demo mode creates a private guest identity in `src/proxy.ts`; full
+  mode uses Supabase Auth. Both paths go through `getCurrentUser()`.
 
 ## Tech stack
 
